@@ -1,5 +1,8 @@
 package tai.dropbox.controller;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -15,9 +18,12 @@ public class TestController {
 	JdbcTemplate template;
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public ModelAndView test(ModelAndView mav){
+	public ModelAndView test(ModelAndView mav,HttpServletRequest req){
 		mav.setViewName("test");
-		mav.addObject("test", "testVal");
+		mav.addObject("test", req.getScheme()+ 
+				req.getServerName()+ 
+				req.getServerPort()+ 
+				req.getContextPath());
 		return mav;
 	}
 	

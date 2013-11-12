@@ -1,7 +1,7 @@
 CREATE TABLE users(
 id BIGINT IDENTITY,
-username CHAR(30),
-password CHAR(30),
-password_salt CHAR(30),
-access_token CHAR(30)
+username VARCHAR(30),
+password VARCHAR(100),
+password_salt VARCHAR(100),
+access_token VARCHAR(100)
 );

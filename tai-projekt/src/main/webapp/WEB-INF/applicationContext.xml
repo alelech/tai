@@ -43,17 +43,18 @@
 
 	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
 
-	<!-- <bean id="myRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
-		<property name="saltStyle" value="COLUMN"/>
-	</bean> -->
+ <bean id="myRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+		<!-- <property name="saltStyle" value="COLUMN"/> -->
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
 	
-	<bean id="myRealm" class="org.apache.shiro.realm.text.TextConfigurationRealm">
+<!-- 	<bean id="myRealm" class="org.apache.shiro.realm.text.TextConfigurationRealm">
 	  <property name="userDefinitions">
 	    <value>
 	      admin = admin
 	      user = user
 	    </value>
 	  </property>
-	</bean>
+	</bean> -->
 
 </beans>

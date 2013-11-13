@@ -1,2 +1,2 @@
-insert into users(username, password) values('admin', 'admin');
+insert into users(username, password, access_token) values('admin', 'admin', 'DFGngJ6fo50AAAAAAAAAASRkY0W8ysvaBjN4hODs95viJfx2_mfwvxyUaRHP6X46');
 insert into users(username, password) values('user', 'user');

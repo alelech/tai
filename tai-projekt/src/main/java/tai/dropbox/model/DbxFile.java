@@ -1,4 +1,4 @@
-package tai.dropbox;
+package tai.dropbox.model;
 
 public class DbxFile {
 	

@@ -8,6 +8,7 @@
 	<title>Login form</title>
 </head>
 <body>
+	<span>${shiroLoginFailure}</span>
 	<center>
 	<h1>LOGIN FORM</h1>
 	<form id="loginform" name="loginform" method="post" action="" accept-charset="utf-8">

@@ -3,9 +3,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/jdbc
@@ -22,9 +25,8 @@
 
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login.jsp" />
-		<property name="successUrl" value="/index.jsp" />
-		<property name="unauthorizedUrl" value="/unauthorized.jsp" />
+		<property name="loginUrl" value="/login.jsp"></property>
+		<property name="successUrl" value="/logSuccess"/>
 		<property name="filterChainDefinitions">
 			<value>
 				/res/** = anon
@@ -32,7 +34,7 @@
 			</value>
 		</property>
 	</bean>
-
+	
 	<!-- <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
 		<property name="hashAlgorithmName" value="SHA-1"></property>
 	</bean> -->

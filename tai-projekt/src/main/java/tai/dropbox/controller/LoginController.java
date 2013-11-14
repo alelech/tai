@@ -76,6 +76,10 @@ public class LoginController {
 	
 	@RequestMapping("/login")
 	public ModelAndView doLogin(ModelAndView mav){
+		Subject subject = SecurityUtils.getSubject();
+		if(subject.isAuthenticated()){
+			mav.setViewName("redirect:main");
+		}
 		return mav;
 	}
 
@@ -88,6 +92,7 @@ public class LoginController {
 		DbxWebAuth webAuth = (DbxWebAuth) SecurityUtils.getSubject().getSession().getAttribute(WEB_AUTH_OBJECT_ATTR);
 		DbxAuthFinish authFinish=null;
 		if (webAuth != null) {
+			SecurityUtils.getSubject().getSession().removeAttribute(WEB_AUTH_OBJECT_ATTR);
 			try {
 				authFinish = webAuth.finish(result);
 			} catch (BadRequestException e) {

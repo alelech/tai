@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,53 +18,29 @@
 	</head>
 	<body>
 	<div id="wrap">
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-           <!--  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button> -->
-            <span class="navbar-brand" href="#">TAI & Dropbox</span>
-          </div>
-         <!--  <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
-                  <li><a href="#">One more separated link</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>/.nav-collapse -->
-        </div>
-      </div>
+		<jsp:include page="template/navbar.jsp"></jsp:include>
 		<div class="container">
 			<div class="row">
 				<div class="col-md-2">
 					<img alt="Dropbox logo" src="res/img/dropbox-logo-black.png" class="img-rounded center-block">
 				</div>
 				<div class="col-md-4">
-					<form id="loginform" name="loginform" method="post" action="" role="form">
+					<form id="loginform" name="loginform" method="post" action="" role="form" class="<c:if test="${not empty shiroLoginFailure}">has-error</c:if>">
 						<h2>Please login</h2>
+						<c:if test="${not empty shiroLoginFailure}">
+							<div class="alert alert-danger">
+  							<span>Authentication error</span>
+							</div>
+							<!-- <h3 class="help-block">Authentication error</h3> -->
+						</c:if>
+						<h3></h3>
 						<div class="form-group">
-							<label for="username">Username</label>
-							<input name="username" id="username" type="text" class="form-control"/>
+							<label for="username" class="control-label">Username</label>
+							<input name="username" id="username" placeholder="Username" type="text" class="form-control"/>
 						</div>
 						<div class="form-group">
-							<label for="password">Password</label>
-							<input name="password" id="password" type="password" class="form-control"/>
+							<label for="password" class="control-label">Password</label>
+							<input name="password" id="password" placeholder="Password" type="password" class="form-control"/>
 						</div>
 						<button type="submit" name="Login" class="btn btn-success">Login</button>
 					</form>
@@ -73,9 +50,7 @@
 		<div></div>
 	</div>
 	<div id="footer">
-		<div class="container">
-			<p class="text-muted credit">2013</p>
-		</div>
+		<jsp:include page="template/footer.jsp"></jsp:include>
     </div>
 		<script src="res/js/jquery.js" type="text/javascript"></script>
 		<script src="res/js/bootstrap.min.js" type="text/javascript"></script>

@@ -17,23 +17,7 @@
 	</head>
 	<body>
 	<div id="wrap">
-		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="container">
-          <div class="navbar-header">
-            <span class="navbar-brand" href="#">TAI & Dropbox</span>
-          </div>
-          <div class="collapse navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Options<b class="caret"></b></a>
-                <ul class="dropdown-menu">
-                  <li><a href="logout">Logout</a></li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
+	  <jsp:include page="template/navbar.jsp"></jsp:include>
       <div class="jumbotron">
       <div class="container">
         <h1>Connect to Dropbox !</h1>
@@ -43,9 +27,7 @@
     </div>
 	</div>
 	<div id="footer">
-		<div class="container">
-			<p class="text-muted credit">2013</p>
-		</div>
+		<jsp:include page="template/footer.jsp"></jsp:include>
     </div>
 		<script src="res/js/jquery.js" type="text/javascript"></script>
 		<script src="res/js/bootstrap.min.js" type="text/javascript"></script>

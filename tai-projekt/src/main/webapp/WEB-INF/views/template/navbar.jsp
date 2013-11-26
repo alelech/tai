@@ -1,9 +1,11 @@
 <%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
             <span class="navbar-brand">TAI and Dropbox</span>
           </div>
+          <shiro:authenticated>
           <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
               <li class="dropdown">
@@ -11,14 +13,15 @@
                 <ul class="dropdown-menu">
                   <li><a href="logout">Logout</a></li>
                   <shiro:hasRole name="administrator">
-                  	<li><a>Add user</a></li>
+                  	<li><a href="#upload" data-toggle="modal">Upload file...</a></li>
                   </shiro:hasRole>
                 </ul>
               </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-				<li><a>Logged as: ${username} (<shiro:principal/>)</a></li>            
+				<li><a>Logged as dropbox user :  <c:choose><c:when test="${ not empty username }">${ username }</c:when><c:otherwise>not connected</c:otherwise></c:choose> (login : <shiro:principal/> , roles : <shiro:hasRole name="administrator">admin</shiro:hasRole> <shiro:hasRole name="user">user</shiro:hasRole>) </a></li>            
             </ul>
           </div>
+          </shiro:authenticated>
         </div>
       </div>

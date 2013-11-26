@@ -44,9 +44,7 @@
     </div>
 	</div>
 	<div id="footer">
-		<div class="container">
-			<p class="text-muted credit">2013</p>
-		</div>
+		<jsp:include page="template/footer.jsp"></jsp:include>
     </div>
 		<script src="res/js/jquery.js" type="text/javascript"></script>
 		<script src="res/js/bootstrap.min.js" type="text/javascript"></script>

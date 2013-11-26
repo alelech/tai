@@ -1,7 +1,5 @@
 package tai.dropbox.controller;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -12,35 +10,31 @@ import javax.servlet.http.HttpSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import tai.dropbox.data.DropboxDao;
+import tai.dropbox.data.UserInfoDao;
+
 import com.dropbox.core.DbxAppInfo;
 import com.dropbox.core.DbxAuthFinish;
-import com.dropbox.core.DbxException;
 import com.dropbox.core.DbxRequestConfig;
 import com.dropbox.core.DbxSessionStore;
 import com.dropbox.core.DbxStandardSessionStore;
 import com.dropbox.core.DbxWebAuth;
-import com.dropbox.core.DbxWebAuth.BadRequestException;
-import com.dropbox.core.DbxWebAuth.BadStateException;
-import com.dropbox.core.DbxWebAuth.CsrfException;
-import com.dropbox.core.DbxWebAuth.NotApprovedException;
-import com.dropbox.core.DbxWebAuth.ProviderException;
 
 @Controller
 public class LoginController {
 
 	private static final String WEB_AUTH_OBJECT_ATTR = "webAuthObject";
-	@Autowired
-	private JdbcTemplate template;
-
 	private static final String APP_KEY = "xwaq9ujw7aoskjm";
 	private static final String APP_SECRET = "2znk2stxkigwknv";
+	
+	@Autowired
+	private UserInfoDao userInfo;
+	
 
 	private DbxAppInfo dbxAppInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
 
@@ -50,7 +44,7 @@ public class LoginController {
 		Subject user = SecurityUtils.getSubject();
 		System.out.println("USER" + user);
 
-		String accessToken = template.queryForObject("select access_token from users where username = ?", new Object[] { user.getPrincipal() }, String.class);
+		String accessToken = userInfo.getAccesTokenForUsername((String) user.getPrincipal());
 
 		if (accessToken != null) {
 			ModelAndView mav = new ModelAndView();
@@ -85,29 +79,13 @@ public class LoginController {
 			SecurityUtils.getSubject().getSession().removeAttribute(WEB_AUTH_OBJECT_ATTR);
 			try {
 				authFinish = webAuth.finish(result);
-			} catch (BadRequestException e) {
-				e.printStackTrace();
-			} catch (BadStateException e) {
-				e.printStackTrace();
-			} catch (CsrfException e) {
-				e.printStackTrace();
-			} catch (NotApprovedException e) {
-				e.printStackTrace();
-			} catch (ProviderException e) {
-				e.printStackTrace();
-			} catch (DbxException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			System.out.println(authFinish.accessToken);
-			final String accessToken = authFinish.accessToken;
-			final Subject subject = SecurityUtils.getSubject();
-			template.update("update users set access_token = ? where username = ?",new PreparedStatementSetter() {			
-				@Override
-				public void setValues(PreparedStatement ps) throws SQLException {
-					ps.setString(1, accessToken);
-					ps.setString(2, (String) subject.getPrincipal());
-				}
-			});
+			String accessToken = authFinish.accessToken;
+			Subject subject = SecurityUtils.getSubject();			
+			userInfo.putAccessTokenForUsername((String) subject.getPrincipal(), accessToken);
+			
 			ModelAndView mav = new ModelAndView();
 			mav.setViewName("authComplete");
 			mav.addObject("dropbox-token", authFinish.accessToken);
@@ -115,7 +93,6 @@ public class LoginController {
 		}
 		else{
 			return null;
-			//TODO Error handling
 		}
 	}
 
@@ -123,7 +100,7 @@ public class LoginController {
 	private String fetchToken(HttpServletRequest request) {
 
 		HttpSession session = request.getSession();
-		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig("tai test", Locale.getDefault().toString());
+		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig(DropboxDao.APP_NAME, Locale.getDefault().toString());
 		String sessionKey = "dropbox-auth-csrf-token";
 		DbxSessionStore dbxSessionStore = new DbxStandardSessionStore(session, sessionKey);
 		String redirectUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/gotToken";

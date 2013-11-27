@@ -31,14 +31,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class DropboxDao {
 
-	public static final String APP_NAME = "tai test";
+	public static final String APP_NAME = "TAI Dropbox";
 	
 	@Autowired
 	private RestTemplate restTemplate;
 	
 	public String getContentTypeOfFile(String path,String accessToken) throws JsonParseException, JsonMappingException, IOException{
 		HttpHeaders headers = new HttpHeaders();
-		//hax hax hax 1337
 	    headers.set("Authorization", "Bearer "+accessToken);
 	    headers.set("Accept", MediaType.APPLICATION_JSON.toString());
 	    HttpEntity<String> req = new HttpEntity<>(headers);

@@ -36,6 +36,10 @@ public class FileController {
 	@Autowired
 	private DropboxDao dropboxDao;
 
+	/**
+	 * Handles request for main page
+	 * @return
+	 */
 	@RequestMapping("/main")
 	public ModelAndView getFiles() {
 		Subject user = SecurityUtils.getSubject();
@@ -54,11 +58,23 @@ public class FileController {
 
 	}
 
+	/**
+	 * Returns view with folder 
+	 * @param model
+	 * @param path
+	 * @return
+	 */
 	@RequestMapping(value = "/folder", method = RequestMethod.GET)
 	public ModelAndView folderDetails(Model model, @RequestParam("path") String path) {
 		return getDropboxFolderModelAndView(path);
 	}
 	
+	/**
+	 * Handles upload request
+	 * @param file
+	 * @param parentDir
+	 * @return
+	 */
 	@RequestMapping("/upload")
 	public String upload(@RequestParam(value="file")MultipartFile file,@RequestParam(value="dir")String parentDir){
 		Subject user = SecurityUtils.getSubject();
@@ -74,6 +90,11 @@ public class FileController {
 		return "redirect:/folder?path="+parentDir;
 	}
 	
+	/**
+	 * Handles download request for a given path
+	 * @param path
+	 * @return
+	 */
 	@RequestMapping(value = "/download")
 	@ResponseBody
 	public ResponseEntity<byte[]> downloadFile(@RequestParam String path){
@@ -97,6 +118,11 @@ public class FileController {
 		return new ResponseEntity<byte[]>(bos.toByteArray(),responseHeaders, HttpStatus.OK);
 	}
 
+	/**
+	 * Prepares data for view of files
+	 * @param path
+	 * @return
+	 */
 	private ModelAndView getDropboxFolderModelAndView(String path) {
 		List<DbxFile> files = new ArrayList<DbxFile>();
 		Subject user = SecurityUtils.getSubject();

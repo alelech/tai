@@ -1,5 +1,10 @@
 package tai.dropbox.model;
 
+/**
+ * Represents file or folder in dropbox directory structure
+ * @author Olek Lech
+ *
+ */
 public class DbxFile {
 	
 	private String name;

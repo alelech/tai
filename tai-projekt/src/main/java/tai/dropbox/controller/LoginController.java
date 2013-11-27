@@ -38,6 +38,10 @@ public class LoginController {
 
 	private DbxAppInfo dbxAppInfo = new DbxAppInfo(APP_KEY, APP_SECRET);
 
+	/**
+	 * Handles request for root page (/)
+	 * @return
+	 */
 	@RequestMapping("/")
 	public ModelAndView getMainPage() {
 
@@ -58,6 +62,11 @@ public class LoginController {
 
 	}
 	
+	/**
+	 * Handles request for login page
+	 * @param mav
+	 * @return
+	 */
 	@RequestMapping("/login")
 	public ModelAndView doLogin(ModelAndView mav){
 		Subject subject = SecurityUtils.getSubject();
@@ -67,6 +76,12 @@ public class LoginController {
 		return mav;
 	}
 
+	/**
+	 * Handles return from OAuth authorization
+	 * @param code
+	 * @param state
+	 * @return
+	 */
 	@RequestMapping("/gotToken")
 	public ModelAndView gotAccesToken(@RequestParam(required = false, value = "code") String code, @RequestParam(required = false, value = "state") String state) {
 
@@ -96,6 +111,11 @@ public class LoginController {
 		}
 	}
 
+	/**
+	 * Starts process of OAuth auhtorization
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping("/fetchToken")
 	private String fetchToken(HttpServletRequest request) {
 

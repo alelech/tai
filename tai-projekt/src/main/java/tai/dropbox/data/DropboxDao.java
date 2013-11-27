@@ -28,6 +28,10 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * Grants access to dropbox services
+ *
+ */
 @Component
 public class DropboxDao {
 
@@ -36,6 +40,15 @@ public class DropboxDao {
 	@Autowired
 	private RestTemplate restTemplate;
 	
+	/**
+	 * Returns content-type for given path (uses restapi)
+	 * @param path
+	 * @param accessToken
+	 * @return
+	 * @throws JsonParseException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
 	public String getContentTypeOfFile(String path,String accessToken) throws JsonParseException, JsonMappingException, IOException{
 		HttpHeaders headers = new HttpHeaders();
 	    headers.set("Authorization", "Bearer "+accessToken);
@@ -48,6 +61,15 @@ public class DropboxDao {
 	    return contentType;
 	}
 	
+	/**
+	 * Downloads file to passed outputStream
+	 * @param path
+	 * @param os
+	 * @param accessToken
+	 * @return
+	 * @throws DbxException
+	 * @throws IOException
+	 */
 	public DbxEntry.File downloadFileToStream(String path, OutputStream os, String accessToken) throws DbxException, IOException{
 		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig(APP_NAME, Locale.getDefault().toString());
 		DbxClient client = new DbxClient(dbxRequestConfig, accessToken);
@@ -55,6 +77,13 @@ public class DropboxDao {
 		return f;
 	}
 	
+	/**
+	 * Get all files in given path
+	 * @param path
+	 * @param accessToken
+	 * @return
+	 * @throws DbxException
+	 */
 	public List<DbxFile> getFileListInPath(String path, String accessToken) throws DbxException{
 		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig(APP_NAME, Locale.getDefault().toString());
 		DbxClient client = new DbxClient(dbxRequestConfig, accessToken);
@@ -71,12 +100,28 @@ public class DropboxDao {
 		return files;
 	}
 	
+	/**
+	 * Upload file from passed stream
+	 * @param accessToken
+	 * @param parentDir
+	 * @param fileName
+	 * @param fileSize
+	 * @param is
+	 * @throws DbxException
+	 * @throws IOException
+	 */
 	public void uploadFileFromStream(String accessToken, String parentDir, String fileName, long fileSize, InputStream is) throws DbxException, IOException{
 		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig(APP_NAME, Locale.getDefault().toString());
 		DbxClient client = new DbxClient(dbxRequestConfig, accessToken);
 		client.uploadFile(parentDir+fileName, DbxWriteMode.add(), fileSize , is);
 	}
 	
+	/**
+	 * Get dropbox display name of user
+	 * @param accessToken
+	 * @return
+	 * @throws DbxException
+	 */
 	public String getDropboxName(String accessToken) throws DbxException {
 		DbxRequestConfig dbxRequestConfig = new DbxRequestConfig(APP_NAME, Locale.getDefault().toString());
 		DbxClient client = new DbxClient(dbxRequestConfig, accessToken);

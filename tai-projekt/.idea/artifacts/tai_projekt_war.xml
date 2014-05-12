@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="tai-projekt:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <root id="archive" name="tai-dropbox.war">
+      <element id="artifact" artifact-name="tai-projekt:war exploded" />
+    </root>
+  </artifact>
+</component>

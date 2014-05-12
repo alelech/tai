@@ -1,69 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
-	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="
-        http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/util
-        http://www.springframework.org/schema/util/spring-util.xsd
-        http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/jdbc
         http://www.springframework.org/schema/jdbc/spring-jdbc.xsd">
 
-	<jdbc:embedded-database id="dataSource" type="HSQL" >
-		<jdbc:script location="classpath:db/schema.sql" />
-		<jdbc:script location="classpath:db/data.sql" />
-	</jdbc:embedded-database>
+    <jdbc:embedded-database id="dataSource" type="HSQL">
+        <jdbc:script location="classpath:db/schema.sql"/>
+        <jdbc:script location="classpath:db/data.sql"/>
+    </jdbc:embedded-database>
 
-	<bean class="org.springframework.jdbc.core.JdbcTemplate">
-		<constructor-arg ref="dataSource"></constructor-arg>
-	</bean>
-	
-	<bean class="org.springframework.web.client.RestTemplate"/>
-	
-	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-    	<property name="maxUploadSize" value="268435456"/>
-	</bean>
+    <bean class="org.springframework.jdbc.core.JdbcTemplate">
+        <constructor-arg ref="dataSource"></constructor-arg>
+    </bean>
 
-	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
-		<property name="securityManager" ref="securityManager" />
-		<property name="loginUrl" value="/login"></property>
-		<property name="successUrl" value="/"/>
-		<property name="filterChainDefinitions">
-			<value>
-				/res/** = anon
-				/logout = logout
-				/** = authc
-			</value>
-		</property>
-	</bean>
-	
-	<!-- <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
-		<property name="hashAlgorithmName" value="SHA-1"></property>
-	</bean> -->
+    <bean class="org.springframework.web.client.RestTemplate"/>
 
-	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
-		<property name="realm" ref="myRealm" />
-	</bean>
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="268435456"/>
+    </bean>
 
-	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+       <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+           <property name="securityManager" ref="securityManager"/>
+           <property name="loginUrl" value="/login"></property>
+           <property name="successUrl" value="/"/>
+           <property name="filterChainDefinitions">
+               <value>
+                   <!--/res/** = anon-->
+                   <!--/logout = logout-->
+                   /** = anon
+               </value>
+           </property>
+       </bean>
 
- <bean id="myRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
-		<!-- <property name="saltStyle" value="COLUMN"/> -->
-		<property name="dataSource" ref="dataSource"/>
-	</bean>
-	
-<!-- 	<bean id="myRealm" class="org.apache.shiro.realm.text.TextConfigurationRealm">
-	  <property name="userDefinitions">
-	    <value>
-	      admin = admin
-	      user = user
-	    </value>
-	  </property>
-	</bean> -->
+    <!--<bean id="securityManager" class="org.apache.shiro.mgt.DefaultSecurityManager">-->
+    <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+    <!--<property name="realm" ref="myRealm"/>-->
+    <!--</bean>-->
+
+    <!-- For simplest integration, so that all SecurityUtils.* methods work in all cases, -->
+    <!-- make the securityManager bean a static singleton.  DO NOT do this in web         -->
+    <!-- applications - see the 'Web Applications' section below instead.                 -->
+    <!--<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">-->
+        <!--<property name="staticMethod" value="org.apache.shiro.SecurityUtils.setSecurityManager"/>-->
+        <!--<property name="arguments" ref="securityManager"/>-->
+    <!--</bean>-->
+
+    <!-- <bean id="credentialsMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+        <property name="hashAlgorithmName" value="SHA-1"></property>
+    </bean> -->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <property name="realm" ref="myRealm"/>
+    </bean>
+
+    <bean id="myRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <!-- <property name="saltStyle" value="COLUMN"/> -->
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 	<bean id="myRealm" class="org.apache.shiro.realm.text.TextConfigurationRealm">
+          <property name="userDefinitions">
+            <value>
+              admin = admin
+              user = user
+            </value>
+          </property>
+        </bean> -->
 
 </beans>

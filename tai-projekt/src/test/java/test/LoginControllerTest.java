@@ -1,5 +1,9 @@
 package test;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
 import org.junit.Before;
@@ -11,15 +15,9 @@ import org.mockito.MockitoAnnotations;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import tai.dropbox.controller.LoginController;
 import tai.dropbox.data.UserInfoDao;
 
@@ -47,8 +45,6 @@ public class LoginControllerTest {
 	    
 	    PowerMockito.mockStatic(SecurityUtils.class);
 	    PowerMockito.when(SecurityUtils.getSubject()).thenReturn(subject);
-
-	
 
 		this.mockMvc = MockMvcBuilders.standaloneSetup(loginController).build();
 

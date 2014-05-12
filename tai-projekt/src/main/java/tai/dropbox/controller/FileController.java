@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import tai.dropbox.auth.NeedsAuthentication;
 import tai.dropbox.data.DropboxDao;
 import tai.dropbox.data.UserInfoDao;
 import tai.dropbox.model.DbxFile;
@@ -41,6 +42,7 @@ public class FileController {
 	 * @return
 	 */
 	@RequestMapping("/main")
+    @NeedsAuthentication
 	public ModelAndView getFiles() {
 		Subject user = SecurityUtils.getSubject();
 		System.out.println("USER" + user);

@@ -4,17 +4,25 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 public aspect AuthAspect {
-    pointcut returnsMav(): execution(@tai.dropbox.auth.NeedsAuthentication ModelAndView *(..));
+
+    pointcut returnsMav(): execution(@NeedsAuthentication ModelAndView *(..));
+
+    pointcut methodWithRole(HasRole role): execution( String *(..)) && @annotation(role);
+
+    String around(HasRole role): methodWithRole(role){
+        if(SecurityUtils.getSubject().hasRole(role.role())){
+            return proceed(role);
+        }
+        else{
+            return "";
+        }
+    }
 
     ModelAndView around(): returnsMav(){
         boolean isAuth = SecurityUtils.getSubject().isAuthenticated();
-        System.out.println("##################################");
-        System.out.println("isAuth ?X?X? "+(isAuth?"yes":"no"));
-        System.out.println("##################################");
-        if(isAuth){
+        if (isAuth) {
             return proceed();
-        }
-        else{
+        } else {
             ModelAndView mav = new ModelAndView("not_logged");
             return mav;
         }

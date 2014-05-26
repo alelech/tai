@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import tai.dropbox.auth.HasRole;
 import tai.dropbox.auth.NeedsAuthentication;
 import tai.dropbox.data.DropboxDao;
 import tai.dropbox.data.UserInfoDao;
@@ -142,5 +143,10 @@ public class FileController {
 		mav.addObject("path", path);
 		return mav;
 	}
+
+    @HasRole(role = "administrator")
+    public static String prepareUploadButton(){
+        return "<li><a href=\"#upload\" data-toggle=\"modal\">Upload file...</a></li>";
+    }
 
 }

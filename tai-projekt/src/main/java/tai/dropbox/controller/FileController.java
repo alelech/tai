@@ -68,6 +68,7 @@ public class FileController {
 	 * @return
 	 */
 	@RequestMapping(value = "/folder", method = RequestMethod.GET)
+    @NeedsAuthentication
 	public ModelAndView folderDetails(Model model, @RequestParam("path") String path) {
 		return getDropboxFolderModelAndView(path);
 	}

@@ -3,11 +3,12 @@ package tai.dropbox.auth;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.web.servlet.ModelAndView;
 
-public aspect AuthAspect {
+public abstract aspect AuthAspect {
 
-    pointcut returnsMav(): execution(@NeedsAuthentication ModelAndView *(..));
+	
+    abstract pointcut returnsMav();
 
-    pointcut methodWithRole(HasRole role): execution( String *(..)) && @annotation(role);
+    abstract pointcut methodWithRole(HasRole role);
 
     String around(HasRole role): methodWithRole(role){
         if(SecurityUtils.getSubject().hasRole(role.role())){
@@ -23,8 +24,10 @@ public aspect AuthAspect {
         if (isAuth) {
             return proceed();
         } else {
-            ModelAndView mav = new ModelAndView("not_logged");
+            ModelAndView mav = new ModelAndView(getNotLoggedViewName());
             return mav;
         }
     }
+    
+    protected abstract String getNotLoggedViewName();
 }

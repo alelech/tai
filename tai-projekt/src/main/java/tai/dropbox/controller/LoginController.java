@@ -87,6 +87,7 @@ public class LoginController {
      * @return
      */
     @RequestMapping("/gotToken")
+    @NeedsAuthentication
     public ModelAndView gotAccesToken(@RequestParam(required = false, value = "code") String code, @RequestParam(required = false, value = "state") String state) {
 
         Map<String, String[]> result = new HashMap<>();

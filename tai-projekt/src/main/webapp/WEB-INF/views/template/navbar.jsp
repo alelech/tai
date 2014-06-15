@@ -20,6 +20,7 @@
                         <ul class="dropdown-menu">
                             <li><a href="logout">Logout</a></li>
                             <%=FileController.prepareUploadButton() %>
+                            <%=FileController.prepareAdminButton() %>
                         </ul>
                     </li>
                 </ul>

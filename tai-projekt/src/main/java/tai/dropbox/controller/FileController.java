@@ -149,5 +149,19 @@ public class FileController {
     public static String prepareUploadButton(){
         return "<li><a href=\"#upload\" data-toggle=\"modal\">Upload file...</a></li>";
     }
+    
+    @HasRole(role = "administrator")
+    public static String prepareAdminButton(){
+        return "<li><a href=\"admin\">Admin panel</a></li>";
+    }
+    
+	@RequestMapping("/admin")
+    @NeedsAuthentication
+	public ModelAndView getAdminPanel() {
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("unauthorized");
+		return mav;
+
+	}
 
 }

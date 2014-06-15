@@ -1,6 +1,5 @@
 package tai.dropbox.auth;
 
-import org.apache.shiro.SecurityUtils;
 import org.springframework.web.servlet.ModelAndView;
 
 public aspect CustomAuthAspect extends AuthAspect {
